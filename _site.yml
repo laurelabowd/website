@@ -1,0 +1,14 @@
+name: "."
+title: "Laurel Abowd"
+description: |
+  Laurel Abowd
+output_dir: "docs"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Laurel Abowd"
+      href: labowd.html
+output: distill::distill_article
