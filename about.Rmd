@@ -1,10 +1,15 @@
 ---
-title: "About this site"
+title: "About Me"
 description: |
-  Some additional details about the website
+  Here's some information on my interests.
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+I graduated from the University of Virginia in 2016 with a Bachelor of Science in environmental science and a Bachelor of Arts in leadership and public policy. After graduation, I spent a few years working for the Chesapeake Bay Program before returning to school for my master's degree in environmental science and management. 
+
+I am driven by the intersection of science and policy and am excited to be learning so much while at the Bren School.
+
+![My favorite bird, the osprey, fishing during my last visit to the Outer Banks.](osprey_08.20_outerbanks.JPG)
