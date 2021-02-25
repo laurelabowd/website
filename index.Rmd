@@ -16,4 +16,6 @@ site: distill::distill_website
 
 ---
  
-Hello! I am a first year master's student at the Bren School of Environmental Science & Management in beautiful Santa Barbara, California.
+Welcome! I am a first year master's student at the Bren School of Environmental Science & Management in beautiful Santa Barbara.
+
+Check out some of my recent R data analysis and visualization projects on the Projects tab. 

@@ -1,7 +1,6 @@
 ---
 title: "About Me"
 description: |
-  Here's some information on my interests.
 ---
 
 ```{r setup, include=FALSE}
