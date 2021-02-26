@@ -65,13 +65,18 @@ tm_shape(ca_subset) +
 ```
 **Figure 1.** Map of 2008 oil spills in California (black dots). Data: California Department of Fish and Game, Office of Spill Prevention and Response (2009)
 
-### Oil spills by California county
+### Inland oil spills by California county
 
 ```{r}
+# Filter oil spills to only have inland spills
+
+oil_spills_inland <- oil_spills %>% 
+  filter(inlandmari == "Inland")
+
 # Get counts of oil spills by counties
 
 county_spills <- ca_subset %>% 
-  st_join(oil_spills)
+  st_join(oil_spills_inland)
   
 ```
 
@@ -83,12 +88,12 @@ ggplot(data = oil_spills_counts) +
   geom_sf(aes(fill = n), color = "white", size = 0.1) +
   scale_fill_gradientn(colors = c('#F0D77B','#5C5992','#14191F')) +
   theme_minimal() +
-  labs(fill = "Number of Oil Spills",
+  labs(fill = "Inland Oil Spill Count",
        x = "longitude",
        y = "latitude")
 
 ```
-**Figure 2.** 2008 number of oil spills by California counties. Data: California Department of Fish and Game, Office of Spill Prevention and Response (2009)
+**Figure 2.** 2008 inland oil spill count for California counties. Data: California Department of Fish and Game, Office of Spill Prevention and Response (2009)
 
 Citation: California Department of Fish and Game, Office of Spill Prevention and Response (2009). 2008 Oil Spill Incident Tracking. Accessed here: https://map.dfg.ca.gov/metadata/ds0394.html#ID0EUGA
 
