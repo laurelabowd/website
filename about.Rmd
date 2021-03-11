@@ -12,3 +12,11 @@ I graduated from the University of Virginia in 2016 with a Bachelor of Science i
 I am driven by the intersection of science and policy and am excited to be learning so much while at the Bren School.
 
 ![My favorite bird, the osprey, fishing during my last visit to the Outer Banks.](osprey_08.20_outerbanks.JPG)
+
+RESUME
+
+```{r echo = FALSE, message = FALSE, fig.align='left', fig.pos='H', out.width="800px", out.height="1100px"}
+knitr::include_graphics("Abowd_Laurel_Resume_Website.pdf")
+
+```
+

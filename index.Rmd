@@ -3,13 +3,11 @@ title: "Laurel Abowd"
 image: "abowd_pic.jpg"
 links:
   - label: LinkedIn
-    url: "https://linkedin.com/"
-  - label: Twitter
-    url: "https://twitter.com/"
+    url: "https://www.linkedin.com/in/laurelabowd/"
   - label: GitHub
-    url: "https://github.com/"
+    url: "https://github.com/laurelabowd/"
   - label: Email
-    url: "mailto:email@email.com"
+    url: "mailto:abowd@ucsb.com"
 output:
   postcards::jolla
 site: distill::distill_website
