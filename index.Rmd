@@ -11,7 +11,6 @@ links:
 output:
   postcards::jolla
 site: distill::distill_website
-
 ---
  
 Welcome! I am a first year master's student at the Bren School of Environmental Science & Management in beautiful Santa Barbara.
