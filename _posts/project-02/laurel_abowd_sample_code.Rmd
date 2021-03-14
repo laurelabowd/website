@@ -78,7 +78,6 @@ While *Serenoa repens* and *Sabal etonia* have similar maximum canopy width (cm)
 
 ## **Binary logistic regression**
 
-**Table 1.** Binary logistic regression results for *Serenoa repens* ('0' factor level) and *Sabal etonia* ('1' factor level) palmetto trees from 1981-2017. Data source: Abrahamson, W.G. (2019)
 ```{r }
 # Binary logistic regression w/ predictor variables of height, length, width, and green leaves
 # levels (0 = "1" (Serenoa repens) 1 = "2" (Sabal etonia))
@@ -86,8 +85,11 @@ While *Serenoa repens* and *Sabal etonia* have similar maximum canopy width (cm)
 palmetto_blr <- glm(species~ height + length + width + green_lvs,
                             data = palmetto,
                             family = "binomial" )
+```
 
+**Table 1.** Binary logistic regression results for *Serenoa repens* ('0' factor level) and *Sabal etonia* ('1' factor level) palmetto trees from 1981-2017. Data source: Abrahamson, W.G. (2019)
 
+```{r}
 # Tidy version
 blr_tidy <- tidy(palmetto_blr)
 
@@ -95,12 +97,12 @@ blr_tidy <- tidy(palmetto_blr)
 blr_tidy %>% 
   kable(col.names = c("Variable", "Coefficient", "Standard Error", "Z Statistic", "P Value")) %>% 
   kable_styling(bootstrap_options = "striped", full_width = FALSE)
-
 ```
+
+
 
 ## **Model classification**
 
-**Table 2.** Number of times the binomial linear regression model correctly predicts palmetto species of either *Serenoa repens* or *Sabal etonia* based on predictor variables of height, canopy length, canopy width, and number of green leaves. Data source: Abrahamson, W.G. (2019)
 ```{r warning = FALSE, message = FALSE}
 # Percentage of time palmettos would be classified as Sabal etonia based on blr model
 blr_fitted <- palmetto_blr %>% 
@@ -131,6 +133,11 @@ predict_counts <- blr_predict %>%
   pivot_wider(names_from = "prediction", values_from = "n") %>% 
   mutate(correctly_predicted = round(((correct)/(correct + incorrect)),digits = 3))
 
+```
+
+**Table 2.** Number of times the binomial linear regression model correctly predicts palmetto species of either *Serenoa repens* or *Sabal etonia* based on predictor variables of height, canopy length, canopy width, and number of green leaves. Data source: Abrahamson, W.G. (2019)
+
+```{r}
 # Finalize table
 predict_counts %>% 
   kable(col.names = c("Species", 
@@ -138,8 +145,8 @@ predict_counts %>%
                       "Incorrectly Classified", 
                       "% Correctly Classified")) %>% 
   kable_styling(bootstrap_options = "striped", full_width = FALSE, position = "center")
-
 ```
+
 
 ## **Summary**
 
