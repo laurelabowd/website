@@ -1,0 +1,162 @@
+---
+title: "Text Analysis: The Alchemist by Paulo Coelho"
+description: |
+  Using text analysis to assess book sentiment.
+author:
+  - name: Laurel Abowd
+date: 2021-03-13
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: hide
+---
+
+```{r setup, include=FALSE, warning= FALSE, error = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(tidytext)
+library(textdata)
+library(pdftools)
+library(ggwordcloud)
+```
+
+## **Introduction**
+
+```{r, cache=TRUE}
+# read in the data
+alchemist <- pdf_text(here("data", "project-03", "the_alchemist_coelho.pdf"))
+
+```
+
+*The Alchemist* chronicles the fable of Santiago, a shepherd boy who travels through the desert to find treasure and fulfill his personal destiny. The journey takes unexpected turns along the way. The book is broken into three parts: Part One, Part Two, and the Epilogue. 
+
+### **Citation:** 
+Coelho, Paulo. The Alchemist. Translated by Alan R. Clarke. Published 1992. ISBN 0-7225-3293-8.
+Retrieved from books-library.online here: 
+https://books-library.online/files/books-library.online-12230111Ib9C3.pdf
+
+```{r}
+# Get text in data frame and tidy format
+
+alchemist_tidy <- data.frame(alchemist) %>% 
+  mutate(text_full = str_split(alchemist, pattern = '\\n')) %>% 
+  unnest(text_full) %>% 
+  mutate(text_full = str_trim(text_full)) 
+
+```
+
+## **Data Wrangling**
+
+```{r}
+# Remove introductory text and assign part 1, part 2, or epilogue to the text_full column
+alchemist_df <- alchemist_tidy %>% 
+  slice(-(1:7)) %>% 
+  mutate(part = case_when(
+    str_detect(text_full, "PART") ~ text_full,
+    str_detect(text_full, "EPILOGUE") ~ text_full,
+    TRUE ~ NA_character_
+  )) %>% 
+  fill(part) %>% 
+  mutate(part = str_to_lower(part))
+```
+
+```{r message = FALSE}
+# Get word counts by part
+
+alchemist_tokens <- alchemist_df %>% 
+  unnest_tokens(word, text_full) %>% 
+  select(part, word)
+
+alchemist_wordcount <- alchemist_tokens %>% 
+  count(part, word)
+
+# Remove stop words
+
+alchemist_nonstop_words <- alchemist_tokens %>% 
+  anti_join(stop_words) 
+
+# "boy" appears frequently, but it is what the author uses to refer to the main character, Santiago.
+# Include "boy" in the stop words
+
+non_stop_counts <- alchemist_nonstop_words %>% 
+  count(part, word) %>% 
+  filter(word != "boy")
+
+```
+
+## **Word Count Analysis**
+
+```{r}
+# Find the top 5 words from each part
+
+top_5_words <- non_stop_counts %>% 
+  group_by(part) %>% 
+  arrange(-n) %>% 
+  slice(1:5)
+
+# Reorder parts so that they occur in chronological order instead of alphabetical
+
+top_5_words_chrn <- top_5_words %>% 
+  mutate( part = factor(part,
+         levels = c("part one", "part two", "epilogue"))) 
+
+
+```
+
+```{r fig.align= 'center'}
+# Make graph
+ggplot(data = top_5_words_chrn, aes(x = word, y =n)) +
+  geom_col(fill = "gold") +
+  facet_wrap(~part, scales = "free") +
+  coord_flip() +
+  labs(y = "word count",
+       title = "The Alchemist top 5 words by part") +
+  theme_grey()
+```
+**Figure 1.** Top five non-stop words in each part of *The Alchemist* 
+
+These top five words reflect the story arc of *The Alchemist*. In Part One, Santiago is with his flock of sheep and dreams of treasure and a journey. In Part Two, Santiago travels through the desert and eventually meets the alchemist. Finally, in the epilogue, there is resolution of Santiago's personal destiny. 
+
+## **NRC Sentiment Analysis** 
+
+```{r message = FALSE}
+# Sentiment analysis 
+
+nrc <- get_sentiments(lexicon = "nrc")
+
+alchemist_nrc <- alchemist_nonstop_words %>% 
+  filter(word != "boy") %>%
+  inner_join(nrc)
+
+alchemist_nrc_counts <- alchemist_nrc %>% 
+  count(part, sentiment)
+
+# Get percentages of sentiments
+alchemist_nrc_percent <- alchemist_nrc_counts %>% 
+  group_by(part) %>% 
+  mutate(percent = round((n/sum(n))*100, 2)) %>% 
+  mutate( part = factor(part,
+                        levels = c("part one", "part two", "epilogue"))) 
+```
+
+```{r fig.align = "center"}
+# graph sentiments for the three parts
+
+ggplot(data = alchemist_nrc_percent, aes(x = sentiment, y = percent)) +
+  geom_col(fill = "gold") +
+  facet_wrap(~part, scales = "free") +
+  coord_flip() +
+  labs(y = "percent occurrence",
+       title = "The Alchemist NRC sentiment analysis by part") +
+  theme_grey()
+
+
+```
+**Figure 2.** Percent occurrence of the NRC lexicon emotions in the three parts of *The Alchemist*
+
+*The Alchemist* is an inspirational book that many people turn to during crossroads in their lives. Unsurprisingly, the predominant emotion in all portions of the book is positive. Santiago always carries with him an unwavering trust in his personal destiny. In Part Two, we see more negative emotions and fear due to some of the challenges along the journey. Finally, in the epilogue, we see lots of anticipation as Santiago's journey draws to a conclusion. 
+
+
+### **Citation:** 
+NRC emotion lexicon. Saif Mohammad and Peter Turney: http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm
