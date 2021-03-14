@@ -1,0 +1,92 @@
+---
+title: "Cetacean Species Richness in California Bight"
+description: |
+  Raster analysis
+author:
+  - name: Laurel Abowd
+date: 2021-02-25
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(raster)
+library(tidyverse)
+library(here)
+library(sf)
+library(fasterize)
+library(maps)
+library(mapdata)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ghibli)
+```
+
+## **Raster Analysis**
+
+```{r}
+# Create function to convert cetacean species of 0 or 1 using a threshold of 0.6 for prescence 
+
+species_present <- function(x, thresh = .6) {
+ y <- ifelse(x >= thresh, 1, 0)
+  return(y)
+}
+
+# Read in  the data
+cetaceans <- here("data", "project-01", "ca_cetaceans")
+
+cetaceans_files <- dir(cetaceans, full.names = TRUE, pattern = "*.tif")
+
+cetaceans_data <- stack(cetaceans_files) 
+
+# Use function to convert to 0 or 1
+
+cetaceans_present <- calc(cetaceans_data, fun = species_present)
+
+# Find summation of species present by adding up the layers
+
+cetaceans_sum <- calc(cetaceans_present, fun = sum, na.rm = TRUE)
+
+```
+
+## **Finalize Map**
+
+```{r}
+# Create finalized map with ggplot
+
+# Convert to data frame
+cetaceans_df <- raster::rasterToPoints(cetaceans_sum) %>%
+  as.data.frame()
+
+# Get world data
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Map with ggplot
+
+ggplot() +
+  geom_raster(data = cetaceans_df, aes(x = x, y = y, fill = layer)) +
+  scale_fill_ghibli_c("MononokeMedium", direction = +1) +
+  geom_sf(data = world) +
+  coord_sf(xlim = c(-125, -115), ylim = c(32, 38)) +
+  theme_minimal() +
+  labs(fill = "Cetacean species\npresent", 
+       x = "longitude",
+       y = "latitude",
+       title = "Cetacean Species Richness in the California Bight")
+
+
+```
+
+**Figure 1.** Cetacean species richness raster map of the California bight. Color indicates number of species present. A threshold of 0.6 was used to determine the presence or absent of the species. If a species had a greater than 0.6 probability of being presence in that area, it was considered to be present. Data: Kaschner et al. (2016)
+
+
+
+### **Data Citation:**   
+Kaschner, K., Rius-Barile, J., Kesner-Reyes, K., Garilao, C., Kullander, S., Rees, T., & Froese, R. (2016). AquaMaps: Predicted range maps for aquatic species. www.aquamaps.org
+
+### **Color Palette:**  
+Ewen Henderson (2020). ghibli: Studio Ghibli Colour Palettes. R package version 0.3.2.
+https://CRAN.R-project.org/package=ghibli 

@@ -21,6 +21,7 @@ library(broom)
 library(kableExtra)
 ```
 
+
 ## **Introduction**
 
 This analysis uses data on two types of Florida palmetto trees to build a species prediction model using binary logistic regression. The model uses palmetto height, canopy length, canopy width, and number of green leaves as predictors for species. The two species of palmettos in this analysis are *Serenoa repens* and *Sabal etonia*.
@@ -50,6 +51,7 @@ ggplot(data = palmetto, aes(x = green_lvs, y = height)) +
   geom_point(aes(color = species), alpha = 0.5) +
   scale_color_manual(values = c("darkslategray4", "violetred3"), 
                      labels = c("Serenoa repens", "Sabal etonia")) +
+  theme(text = element_text(size = 20)) +
   labs(x = "Count of Green Leaves on Tree",
        y = "Maximum Tree Height (cm)",
        title = "Palmetto Maximum Tree Height (cm) vs. Green Leaf Count") +
