@@ -1,5 +1,5 @@
 ---
-title: "Bootstrapping"
+title: "Bootstrapping: UCSB Campus Climate Project"
 description: |
   Using bootstrapping to find confidence interval.
 author:
@@ -69,8 +69,8 @@ ggplot(data = survey_data_10k_df, aes(x = bs_prop)) +
   geom_histogram(bins = 22, fill = "#275070") +
   theme_minimal() +
   labs(y = "Count",
-       x = "Proportion",
-       title = "Bootstraped Survey Data: n = 10,000")
+       x = "Proportion experiencing exclusionary, offensive, hostile or intimidating conduct",
+       title = "Nonbinary/Genderqueer Bootstraped Survey Data: n = 10,000")
 ```
 
 ## **Confidence interval**
@@ -78,7 +78,9 @@ ggplot(data = survey_data_10k_df, aes(x = bs_prop)) +
 boot.ci(survey_data_10k, conf = 0.95, type = "perc")
 ```
 
-In the 2014 UCSB Campus Climate Project Final Report, 22 of the 36 of surveyed UCSB community members identifying as nonbinary/genderqueer responded that they had personally experienced, "exculsionary, offensive, hostile or intimidating conduct," or a  proportion of 0.61 (n = 36), with a bootstrapped 95% confidence interval of [0.44, 0.78] (n = 10,000 bootstrap samples).
+
+## **Summary**
+In the 2014 UCSB Campus Climate Project Final Report, 22 of the 36 of surveyed UCSB community members identifying as nonbinary/genderqueer responded that they had personally experienced, "exclusionary, offensive, hostile or intimidating conduct," or a  proportion of 0.61 (n = 36), **with a bootstrapped 95% confidence interval of [0.44, 0.78] (n = 10,000 bootstrap samples).**
 
 ### **Data available at:**
 https://campusclimate.ucop.edu/_common/files/pdf-climate/ucsb-full-report.pdf
