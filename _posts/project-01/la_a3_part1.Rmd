@@ -1,7 +1,7 @@
 ---
-title: "Cetacean Species Richness in California Bight"
+title: "Raster mapping: Cetacean Species Richness in the California Bight"
 description: |
-  Raster analysis
+  Using raster analysis to visualize species richness.
 author:
   - name: Laurel Abowd
 date: 2021-02-25
@@ -24,6 +24,10 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(ghibli)
 ```
+
+## **Introduction**
+
+This analysis overlays likelihood of cetacean species within the southern California bight using raster data. A threshold of 0.6 was used to determine whether or not a species was considered as present in a certain area. Some examples of cetacean species that can be find in the California Bight include grey whales, short-beak common dolphins, and bottlenose dolphins.
 
 ## **Raster Analysis**
 
@@ -52,7 +56,7 @@ cetaceans_sum <- calc(cetaceans_present, fun = sum, na.rm = TRUE)
 
 ```
 
-## **Finalize Map**
+## **Mapping**
 
 ```{r}
 # Create finalized map with ggplot
@@ -82,6 +86,8 @@ ggplot() +
 
 **Figure 1.** Cetacean species richness raster map of the California bight. Color indicates number of species present. A threshold of 0.6 was used to determine the presence or absent of the species. If a species had a greater than 0.6 probability of being presence in that area, it was considered to be present. Data: Kaschner et al. (2016)
 
+## **Summary**
+As indicated by the map, the area within the California Bight with the greatest cetacean species richness is the area surrounding and south of the Channel Islands.
 
 
 ### **Data Citation:**   

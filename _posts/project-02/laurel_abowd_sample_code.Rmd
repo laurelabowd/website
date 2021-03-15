@@ -1,7 +1,7 @@
 ---
-title: "Palmetto binary logistic regression"
+title: "Modeling: Palmetto tree binary logistic regression"
 description: |
-  Using binary logistic regression to predict palmetto species type.
+  Creating a binary logistic regression model to predict palmetto species type.
 author:
   - name: Laurel Abowd
 date: 2021-03-12
